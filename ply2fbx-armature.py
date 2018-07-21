@@ -60,6 +60,13 @@ class AutoWeight(bpy.types.Operator):
     """AutoWeight"""
     bl_idname = "armature.autoweight"
     bl_label = "Auto Weight"
+    
+    @classmethod
+    def poll(cls, context):
+        # armature and mesh neet to proc
+        arm = [True for x in bpy.data.objects if x.type=='ARMATURE']
+        mesh = [True for x in bpy.data.objects if x.type=='MESH']
+        return (len(arm) > 0) and (len(mesh) > 0)
 
 ####
 
