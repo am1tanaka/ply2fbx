@@ -8,7 +8,7 @@ from bpy.types import Operator
 from io_mesh_ply import import_ply
 
 class ImportPLY(bpy.types.Operator):
-    """Import PLY Data"""
+    """PLYをインポートして、 左下の倍率でスケーリングします。"""
     bl_idname = "import.ply"
     bl_label = "Import PLY"
 
@@ -57,10 +57,10 @@ class View3DPanel:
 ####
 
 class AutoWeight(bpy.types.Operator):
-    """AutoWeight"""
+    """アーマチュア(BaseArmature.blend)と メッシュを自動的にウェイト設定します。 事前にアーマチュアとメッシュを読み込んで重ねてから実行してください。"""
     bl_idname = "armature.autoweight"
     bl_label = "Auto Weight"
-    
+
     @classmethod
     def poll(cls, context):
         # armature and mesh neet to proc
@@ -71,7 +71,7 @@ class AutoWeight(bpy.types.Operator):
 ####
 
 class ExportFBX(bpy.types.Operator):
-    """Export FBX and Texture"""
+    """PLYメッシュへのマテリアル設定と、 頂点カラーのテクスチャーを生成して、 指定の場所とファイル名でFBXとPNGを出力します。"""
     bl_idname = "export.fbxtexture"
     bl_label = "Export FBX and Texture"
 
@@ -87,7 +87,7 @@ class PanelPlyTool(View3DPanel, bpy.types.Panel):
         obj = context.object
         layout.operator_context = 'INVOKE_DEFAULT'
         layout.operator(ImportPLY.bl_idname, text="Import PLY")
-        
+
         layout.operator(AutoWeight.bl_idname, text="Auto Weight")
 
         layout.operator(ExportFBX.bl_idname, text="Export FBX and Texture")
