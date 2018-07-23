@@ -3,12 +3,14 @@ import bpy
 # ExportHelper is a helper class, defines filename and
 # invoke() function which calls the file selector.
 from bpy_extras.io_utils import ImportHelper
-from bpy.props import StringProperty, BoolProperty, EnumProperty, FloatProperty
+from bpy.props import StringProperty, BoolProperty, EnumProperty, FloatProperty, IntProperty
 from bpy.types import Operator
 from io_mesh_ply import import_ply
 
 class ImportPLY(bpy.types.Operator):
-    """PLYをインポートして、 重複頂点を結合して、左下の倍率でスケーリングします。"""
+    """
+    PLYをインポートして、 重複頂点を結合して、左下の倍率でスケーリングします。
+    """
     bl_idname = "import.ply"
     bl_label = "Import PLY"
 
@@ -59,7 +61,10 @@ class View3DPanel:
 ####
 
 class AutoWeight(bpy.types.Operator):
-    """アーマチュア(BaseArmature.blend)と メッシュを自動的にウェイト設定します。 事前にアーマチュアとメッシュを読み込んで重ねてから実行してください。"""
+    """
+    アーマチュア(BaseArmature.blend)と メッシュを自動的にウェイト設定します。
+     事前にアーマチュアとメッシュを読み込んで重ねてから実行してください。
+    """
     bl_idname = "armature.autoweight"
     bl_label = "Auto Weight"
 
@@ -87,13 +92,71 @@ class AutoWeight(bpy.types.Operator):
 
 ####
 
-
-
 class ExportFBX(bpy.types.Operator):
-    """PLYメッシュへのマテリアル設定と、 頂点カラーのテクスチャーを生成して、 指定の場所とファイル名でFBXとPNGを出力します。"""
+    """
+    PLYメッシュへのマテリアル設定と、 頂点カラーのテクスチャーを生成して、
+    指定の場所とファイル名でFBXとPNGを出力します。
+    """
     bl_idname = "export.fbxtexture"
     bl_label = "Export FBX and Texture"
 
+    filename_ext = ".fbx"
+
+    filter_glob = StringProperty(
+            default="*.fbx",
+            options={'HIDDEN'},
+            maxlen=255,  # Max internal buffer length, longer would be clamped.
+            )
+
+    filepath = bpy.props.StringProperty(subtype="FILE_PATH")
+
+    width = IntProperty(
+            name="Texture Width",
+            description="Texture Width",
+            min=1, max=4096,
+            default=512,
+            )
+    height = IntProperty(
+            name="Texture Height",
+            description="Texture Height",
+            min=1, max=4096,
+            default=512,
+            )
+
+    def execute(self, context):
+        print(self.filepath)
+        print(bpy.path.ensure_ext(filepath=self.filepath, ext='.png'))
+
+        # テクスチャ生成
+        self.makeTexture(context)
+
+        # マテリアルの作成
+        self.makeMaterial(context)
+
+        # テクスチャをマテリアルに割り当て
+
+        # FBXエクスポート
+
+        return {'FINISHED'}
+
+    def invoke(self, context, event):
+        context.window_manager.fileselect_add(self)
+        return {'RUNNING_MODAL'}
+
+    def makeTexture(self, context):
+        fname = bpy.path.basename(self.filepath)
+        image = bpy.data.images.new(name=fname, width=self.width, height=self.height, alpha=True)
+        print("w=%d, h=%d" % (self.width, self.height))
+        print(image)
+
+
+    def makeMaterial(self, context):
+        bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
+        bpy.ops.object.select_by_type(type='MESH', extend=False)
+        #bpy.ops.material.new()
+        #bpy.ops.texture.new()
+        #fname = bpy.path.basename(self.filepath)
+        #bpy.data.textures[fname] = fname
 
 class PanelPlyTool(View3DPanel, bpy.types.Panel):
     """Ply Convert Tool"""
