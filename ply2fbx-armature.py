@@ -82,15 +82,20 @@ class AutoWeight(bpy.types.Operator):
         bpy.ops.object.select_by_type(type='MESH', extend=False)
         bpy.ops.object.select_by_type(type='ARMATURE', extend=True)
 
-        for obj in bpy.data.objects:
-            if (obj.type=='ARMATURE'):
-                bpy.context.scene.objects.active = obj
+        SetActiveObject('ARMATURE')
 
         bpy.ops.object.parent_set(type='ARMATURE_AUTO')
 
         return {'FINISHED'}
 
 ####
+
+def SetActiveObject(type):
+    for obj in bpy.data.objects:
+        if (obj.type == type):
+            bpy.context.scene.objects.active = obj
+
+
 
 class ExportFBX(bpy.types.Operator):
     """
@@ -144,11 +149,23 @@ class ExportFBX(bpy.types.Operator):
         return {'RUNNING_MODAL'}
 
     def makeTexture(self, context):
+        # make image for texture
         fname = bpy.path.basename(self.filepath)
         image = bpy.data.images.new(name=fname, width=self.width, height=self.height, alpha=True)
-        print("w=%d, h=%d" % (self.width, self.height))
-        print(image)
 
+        # unwrap
+        bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
+        bpy.ops.object.select_all(action='DESELECT')
+        bpy.ops.object.select_by_type(type='MESH', extend=False)
+        SetActiveObject('MESH')
+        bpy.ops.object.mode_set(mode='EDIT', toggle=False)
+        bpy.ops.uv.smart_project(island_margin=0.06)
+
+        # bake bake_type='VERTEX_COLORS', bake_margin = 4
+        # bpy.ops.object.bake_image()
+
+        # save
+        # bpy.ops.image.save_as()
 
     def makeMaterial(self, context):
         bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
