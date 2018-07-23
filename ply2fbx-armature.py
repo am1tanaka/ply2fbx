@@ -8,7 +8,7 @@ from bpy.types import Operator
 from io_mesh_ply import import_ply
 
 class ImportPLY(bpy.types.Operator):
-    """PLYをインポートして、 左下の倍率でスケーリングします。"""
+    """PLYをインポートして、 重複頂点を結合して、左下の倍率でスケーリングします。"""
     bl_idname = "import.ply"
     bl_label = "Import PLY"
 
@@ -35,6 +35,8 @@ class ImportPLY(bpy.types.Operator):
         bpy.ops.object.select_all(action='DESELECT')
         import_ply.load_ply(self.filepath)
         bpy.ops.object.mode_set(mode='EDIT', toggle=False)
+
+        bpy.ops.mesh.remove_doubles()
 
         # 3D Cursor to zero
         bpy.ops.view3d.snap_cursor_to_center()
@@ -68,7 +70,24 @@ class AutoWeight(bpy.types.Operator):
         mesh = [True for x in bpy.data.objects if x.type=='MESH']
         return (len(arm) > 0) and (len(mesh) > 0)
 
+    def execute(self, context):
+        bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
+        bpy.ops.object.select_all(action='DESELECT')
+
+        bpy.ops.object.select_by_type(type='MESH', extend=False)
+        bpy.ops.object.select_by_type(type='ARMATURE', extend=True)
+
+        for obj in bpy.data.objects:
+            if (obj.type=='ARMATURE'):
+                bpy.context.scene.objects.active = obj
+
+        bpy.ops.object.parent_set(type='ARMATURE_AUTO')
+
+        return {'FINISHED'}
+
 ####
+
+
 
 class ExportFBX(bpy.types.Operator):
     """PLYメッシュへのマテリアル設定と、 頂点カラーのテクスチャーを生成して、 指定の場所とファイル名でFBXとPNGを出力します。"""
