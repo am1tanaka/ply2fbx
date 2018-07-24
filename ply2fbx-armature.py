@@ -77,10 +77,10 @@ class AutoWeight(bpy.types.Operator):
         return (len(arm) > 0) and (len(mesh) > 0)
 
     def execute(self, context):
-        bpy.ops.object.mode_set(mode='OBJECT', toggle=Fals)
+        bpy.ops.object.mode_set(mode='OBJECT')
         bpy.ops.object.select_all(action='DESELECT')
 
-        bpy.ops.object.select_by_type(type='MESH', extend=False)
+        bpy.ops.object.select_by_type(type='MESH')
         bpy.ops.object.select_by_type(type='ARMATURE', extend=True)
 
         SetActiveObject('ARMATURE')
@@ -99,6 +99,9 @@ def SetActiveObject(type):
 def GetFileName(fpath):
     return os.path.splitext(bpy.path.basename(fpath))[0]
 
+def GetFilePath(fpath, fext):
+    fdir = os.path.dirname(fpath)
+    return os.path.join(fdir, bpy.path.ensure_ext(filepath=GetFileName(fpath), ext=fext))
 
 class ExportFBX(bpy.types.Operator):
     """
@@ -131,21 +134,22 @@ class ExportFBX(bpy.types.Operator):
             default=512,
             )
 
-    def execute(self, context):
-        print(self.filepath)
-        pngpath = os.path.dirname(self.filepath)
-        pngpath = os.path.join(pngpath, bpy.path.ensure_ext(filepath=GetFileName(self.filepath), ext='.png'))
-        print(pngpath)
+    @classmethod
+    def poll(cls, context):
+        # armature and mesh neet to proc
+        mesh = [True for x in bpy.data.objects if x.type=='MESH']
+        return (len(mesh) > 0)
 
+    def execute(self, context):
         # テクスチャ生成
         self.makeTexture(context)
 
-        # マテリアルの作成
-        #self.makeMaterial(context)
-
-        # テクスチャをマテリアルに割り当て
+        # マテリアルの作成と設定
+        self.makeMaterial(context)
 
         # FBXエクスポート
+        print(GetFilePath(self.filepath, ".fbx"))
+        bpy.ops.export_scene.fbx(filepath=GetFilePath(self.filepath, ".fbx"))
 
         return {'FINISHED'}
 
@@ -180,26 +184,18 @@ class ExportFBX(bpy.types.Operator):
         image.file_format = "PNG"
         image.save()
 
-# Save the baked image
-#image.filepath_raw = "output.png"
-#image.file_format = "PNG"
-#image.save()
-
-# Save the new model with the new UV channel
-#ops.object.mode_set(mode='OBJECT')
-#bpy.ops.export.three(filepath="output.json")
-
-
-        # save
-        # bpy.ops.image.save_as()
-
     def makeMaterial(self, context):
-        bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
-        bpy.ops.object.select_by_type(type='MESH', extend=False)
-        #bpy.ops.material.new()
-        #bpy.ops.texture.new()
-        #fname = bpy.path.basename(self.filepath)
-        #bpy.data.textures[fname] = fname
+        objname = GetFileName(self.filepath)
+
+        bpy.ops.object.mode_set(mode='OBJECT')
+        bpy.ops.object.select_by_type(type='MESH')
+
+        mat = bpy.data.materials.new(objname)
+        bpy.context.object.active_material = mat
+        tex = bpy.data.textures.new(objname, type='IMAGE')
+        bpy.context.object.active_material.active_texture = tex
+
+        tex.image = bpy.data.screens['UV Editing'].areas[1].spaces[0].image
 
 class PanelPlyTool(View3DPanel, bpy.types.Panel):
     """Ply Convert Tool"""
