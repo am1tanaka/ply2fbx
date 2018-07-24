@@ -6,7 +6,6 @@ import os
 from bpy_extras.io_utils import ImportHelper
 from bpy.props import StringProperty, BoolProperty, EnumProperty, FloatProperty, IntProperty
 from bpy.types import Operator
-from io_mesh_ply import import_ply
 
 class ImportPLY(bpy.types.Operator):
     """
@@ -36,7 +35,7 @@ class ImportPLY(bpy.types.Operator):
 
     def execute(self, context):
         bpy.ops.object.select_all(action='DESELECT')
-        import_ply.load_ply(self.filepath)
+        bpy.ops.import_mesh.ply(filepath=self.filepath)
         bpy.ops.object.mode_set(mode='EDIT', toggle=False)
 
         bpy.ops.mesh.remove_doubles()
