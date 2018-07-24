@@ -1,4 +1,5 @@
 import bpy
+import os
 
 # ExportHelper is a helper class, defines filename and
 # invoke() function which calls the file selector.
@@ -76,7 +77,7 @@ class AutoWeight(bpy.types.Operator):
         return (len(arm) > 0) and (len(mesh) > 0)
 
     def execute(self, context):
-        bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
+        bpy.ops.object.mode_set(mode='OBJECT', toggle=Fals)
         bpy.ops.object.select_all(action='DESELECT')
 
         bpy.ops.object.select_by_type(type='MESH', extend=False)
@@ -95,6 +96,8 @@ def SetActiveObject(type):
         if (obj.type == type):
             bpy.context.scene.objects.active = obj
 
+def GetFileName(fpath):
+    return os.path.splitext(bpy.path.basename(fpath))[0]
 
 
 class ExportFBX(bpy.types.Operator):
@@ -150,21 +153,36 @@ class ExportFBX(bpy.types.Operator):
 
     def makeTexture(self, context):
         # make image for texture
-        fname = bpy.path.basename(self.filepath)
-        image = bpy.data.images.new(name=fname, width=self.width, height=self.height, alpha=True)
+        fname = GetFileName(self.filepath)
+        image = bpy.data.images.new(name=fname, width=self.width, height=self.height)
+        bpy.data.screens['UV Editing'].areas[1].spaces[0].image = image
 
         # unwrap
         bpy.ops.object.mode_set(mode='OBJECT')
-        bpy.ops.object.select_all(action='DESELECT')
+        bpy.ops.object.select_by_type(type='MESH')
         SetActiveObject('MESH')
         bpy.ops.object.mode_set(mode='EDIT')
         bpy.ops.mesh.select_all(action='SELECT')
 
-        #bpy.ops.object.mode_set(mode='EDIT')
-        #bpy.ops.uv.smart_project(island_margin=0.06)
+        bpy.ops.uv.smart_project(island_margin=0.06)
 
         # bake bake_type='VERTEX_COLORS', bake_margin = 4
-        # bpy.ops.object.bake_image()
+        bpy.context.scene.render.bake_type = 'VERTEX_COLORS'
+        bpy.context.scene.render.bake_margin = 4
+        bpy.ops.object.bake_image()
+
+        # save PNG
+        
+
+# Save the baked image
+#image.filepath_raw = "output.png"
+#image.file_format = "PNG"
+#image.save()
+
+# Save the new model with the new UV channel
+#ops.object.mode_set(mode='OBJECT')
+#bpy.ops.export.three(filepath="output.json")
+
 
         # save
         # bpy.ops.image.save_as()
