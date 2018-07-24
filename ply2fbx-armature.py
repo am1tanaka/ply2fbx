@@ -161,7 +161,6 @@ class ExportFBX(bpy.types.Operator):
         # make image for texture
         fname = GetFileName(self.filepath)
         image = bpy.data.images.new(name=fname, width=self.width, height=self.height)
-        bpy.data.screens['UV Editing'].areas[1].spaces[0].image = image
 
         # unwrap
         bpy.ops.object.mode_set(mode='OBJECT')
@@ -175,6 +174,7 @@ class ExportFBX(bpy.types.Operator):
         # bake bake_type='VERTEX_COLORS', bake_margin = 4
         bpy.context.scene.render.bake_type = 'VERTEX_COLORS'
         bpy.context.scene.render.bake_margin = 4
+        bpy.data.screens['UV Editing'].areas[1].spaces[0].image = image
         bpy.ops.object.bake_image()
 
         # save PNG
