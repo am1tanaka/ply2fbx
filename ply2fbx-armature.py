@@ -133,7 +133,9 @@ class ExportFBX(bpy.types.Operator):
 
     def execute(self, context):
         print(self.filepath)
-        print(bpy.path.ensure_ext(filepath=self.filepath, ext='.png'))
+        pngpath = os.path.dirname(self.filepath)
+        pngpath = os.path.join(pngpath, bpy.path.ensure_ext(filepath=GetFileName(self.filepath), ext='.png'))
+        print(pngpath)
 
         # テクスチャ生成
         self.makeTexture(context)
@@ -172,7 +174,11 @@ class ExportFBX(bpy.types.Operator):
         bpy.ops.object.bake_image()
 
         # save PNG
-        
+        pngpath = os.path.dirname(self.filepath)
+        pngpath = os.path.join(pngpath, bpy.path.ensure_ext(filepath=GetFileName(self.filepath), ext='.png'))
+        image.filepath_raw = pngpath
+        image.file_format = "PNG"
+        image.save()
 
 # Save the baked image
 #image.filepath_raw = "output.png"
