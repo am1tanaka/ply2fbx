@@ -136,7 +136,7 @@ class ExportFBX(bpy.types.Operator):
         self.makeTexture(context)
 
         # マテリアルの作成
-        self.makeMaterial(context)
+        #self.makeMaterial(context)
 
         # テクスチャをマテリアルに割り当て
 
@@ -154,12 +154,14 @@ class ExportFBX(bpy.types.Operator):
         image = bpy.data.images.new(name=fname, width=self.width, height=self.height, alpha=True)
 
         # unwrap
-        bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
+        bpy.ops.object.mode_set(mode='OBJECT')
         bpy.ops.object.select_all(action='DESELECT')
-        bpy.ops.object.select_by_type(type='MESH', extend=False)
         SetActiveObject('MESH')
-        bpy.ops.object.mode_set(mode='EDIT', toggle=False)
-        bpy.ops.uv.smart_project(island_margin=0.06)
+        bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.mesh.select_all(action='SELECT')
+
+        #bpy.ops.object.mode_set(mode='EDIT')
+        #bpy.ops.uv.smart_project(island_margin=0.06)
 
         # bake bake_type='VERTEX_COLORS', bake_margin = 4
         # bpy.ops.object.bake_image()
