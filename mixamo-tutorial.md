@@ -299,3 +299,4 @@ mixamoを利用することで、モデルの体形の自由度があがり、�
 - [MagicaVoxel](https://ephtracy.github.io/)
 - [Blender 2.79.0 855d2955c49 - API documentation](https://docs.blender.org/api/2.79/)
 - [mixamo](https://www.mixamo.com/)
+- [だいし. MagicaVoxelで作ったプリキュアをUnityで動かす](https://github.dev7.jp/b/2015/12/15/precureadv20151213/)
