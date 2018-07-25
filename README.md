@@ -31,8 +31,8 @@
 # チュートリアル
 詳しい利用手順は以下を参照ください。
 
-- [BlenderでヒューマノイドモデルのFBXとPNGを生成する](./blender-tutorial.md)
-- [Blenderでエクスポートしたメッシュをmixamoでアニメ付けする](./mixamo-tutorial.md)
+- [MagicaVoxelのPLYファイルにウェイト設定してUnityでアニメーションさせる](http://am1tanaka.hatenablog.com/entry/2018/07/25/214935)
+- [MagicaVoxelのPLYモデルにmixamoでアニメ設定をしてUnityで動かす](http://am1tanaka.hatenablog.com/entry/2018/07/25/224847)
 
 # 使い方
 ## Import PLY
