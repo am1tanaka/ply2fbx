@@ -190,6 +190,7 @@ class ExportFBX(bpy.types.Operator):
         bpy.ops.object.select_by_type(type='MESH')
 
         mat = bpy.data.materials.new(objname)
+        mat.diffuse_color = (1, 1, 1)
         bpy.context.object.active_material = mat
         tex = bpy.data.textures.new(objname, type='IMAGE')
         bpy.context.object.active_material.active_texture = tex
