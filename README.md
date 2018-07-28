@@ -14,13 +14,14 @@
 **Blender 2.79b**にインストールする手順です。Blenderはインストール済みとします。
 
 - Blenderが起動していたら閉じておきます
-- Blenderのインストールフォルダーを開いて、`scripts/startup`フォルダーを開きます
-  - Windowsの場合、デフォルトのインストール先は`C:\Program Files\Blender Foundation\Blender\2.79\`です
+- [こちら](https://github.com/am1tanaka/ply2fbx/releases/download/v1.0.2/ply2fbx-armature.py)から`ply2fbx-armature.py`をダウンロードします
+- Blenderの`scripts/startup`フォルダーを開きます
+  - macの場合、Finderでアプリケーションを選択 -> blender-2.??-macOS-?? -> blenderを[Ctrl]+クリック -> パッケージの内容を表示 -> Contents -> Resources -> 2.79 -> scripts -> startupを開きます
+  - Windowsの場合、デフォルト設定でインストールしていたら、`C:\Program Files\Blender Foundation\Blender\2.79\scripts\startup`です
 
 ![open startup folder](doc-images/img00.png)
-- [こちら](https://github.com/am1tanaka/ply2fbx/releases/download/v1.0.2/ply2fbx-armature.py)からダウンロードした`ply2fbx-armature.py`を、`scripts/startup`フォルダーにコピーします(コピーする時に、管理者パスワードが必要になる場合があります)
-  - Windowsの場合、Blenderのインストールフォルダー内
-  - macの場合、Finderでアプリケーションを選択 -> blender-2.??-macOS-?? -> blenderを[Ctrl]+クリック -> パッケージの内容を表示 -> Contents -> Resources -> 2.79 -> scripts -> startupフォルダー内
+
+- ダウンロードした`ply2fbx-armature.py`を、上記で開いた`startup`フォルダーにコピーします(コピーする時に、管理者パスワードが必要になる場合があります)
 
 ![copy py file](doc-images/img01.png)
 
