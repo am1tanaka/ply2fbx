@@ -118,6 +118,8 @@ PLYファイルをUnityで表示できるFBXにするために以下を実行し
 - [MagicaVoxel](https://ephtracy.github.io/)
 - [Blender 2.79.0 855d2955c49 - API documentation](https://docs.blender.org/api/2.79/)
 - [だいし. MagicaVoxelで作ったプリキュアをUnityで動かす](https://github.dev7.jp/b/2015/12/15/precureadv20151213/)
+- [裏鍵.dump. MagicaVoxel→Blender→Unityでボクセルモデルを動かす 改③（終）](http://urkgdmp.hatenadiary.jp/entry/2016/07/30/134028)
+  - PLYのテクスチャー生成はこちらのブログを参考にしました
 
 ---
 # ライセンス
