@@ -3,6 +3,9 @@ import os
 
 # ExportHelper is a helper class, defines filename and
 # invoke() function which calls the file selector.
+
+# Copyright (C) 2018 YuTanaka
+# v1.0.3
 from bpy_extras.io_utils import ImportHelper
 from bpy.props import StringProperty, BoolProperty, EnumProperty, FloatProperty, IntProperty
 from bpy.types import Operator
@@ -133,6 +136,20 @@ class ExportFBX(bpy.types.Operator):
             default=512,
             )
 
+    object_types = EnumProperty(
+            name="Object Types",
+            options={'ENUM_FLAG'},
+            items=(('EMPTY', "Empty", ""),
+                   ('CAMERA', "Camera", ""),
+                   ('LAMP', "Lamp", ""),
+                   ('ARMATURE', "Armature", "WARNING: not supported in dupli/group instances"),
+                   ('MESH', "Mesh", ""),
+                   ('OTHER', "Other", "Other geometry types, like curve, metaball, etc. (converted to meshes)"),
+                   ),
+            description="Which kind of object to export",
+            default={'EMPTY', 'ARMATURE', 'MESH', 'OTHER'},
+            )
+
     @classmethod
     def poll(cls, context):
         # armature and mesh neet to proc
@@ -148,7 +165,7 @@ class ExportFBX(bpy.types.Operator):
 
         # FBXエクスポート
         print(GetFilePath(self.filepath, ".fbx"))
-        bpy.ops.export_scene.fbx(filepath=GetFilePath(self.filepath, ".fbx"))
+        bpy.ops.export_scene.fbx(filepath=GetFilePath(self.filepath, ".fbx"), object_types=self.object_types)
 
         return {'FINISHED'}
 
