@@ -5,10 +5,24 @@ import os
 # invoke() function which calls the file selector.
 
 # Copyright (C) 2018 YuTanaka
-# v1.0.3
+# v1.0.4
 from bpy_extras.io_utils import ImportHelper
 from bpy.props import StringProperty, BoolProperty, EnumProperty, FloatProperty, IntProperty
 from bpy.types import Operator
+
+bl_info = {
+    "name": "PLY2FBXエクスポーター",
+    "author": "YuTanaka",
+    "version": (1, 0, 4),
+    "blender": (2, 79, 0),
+    "location": "File > Import-Export",
+    "description": "PLYファイルとアーマチュアの自動ウェイトやテクスチャ作成をしてFBXエクスポートするアドオン",
+    "warning": "",
+    "support": "TESTING",
+    "wiki_url": "https://am1tanaka.github.io/ply2fbx/",
+    "tracker_url": "https://github.com/am1tanaka/ply2fbx/issues",
+    "category": "Import-Export",
+}
 
 class ImportPLY(bpy.types.Operator):
     """

@@ -1,7 +1,10 @@
 # PLY2FBX
 **MagicaVoxel**で**PLY**形式で出力したボクセルのキャラクターにウェイトを設定して、テクスチャーを生成して、FBXとPNGを出力するBlender用のスクリプトです。
 
+- v1.0.4(2018/8/30) インストール方法をアドオンからできるように改善
 - v1.0.3(2018/8/30) エクスポート時にデータに含めるオブジェクトを選択する機能を追加
+
+---
 
 2通りの方法で、ウェイト設定をしたキャラクターを作ることができます。
 
@@ -12,26 +15,43 @@
 
 **PLY**形式のボクセルモデルのテクスチャーを作成して、FBXにエクスポートするのにも利用できます。
 
-# インストール
-**Blender 2.79b**にインストールする手順です。Blenderはインストール済みとします。
+# バージョンアップする前に
+**v1.0.4**からアドオンとしてインストールするように変更しました。**v1.0.3以前からバージョンアップする場合**は、以下の手順に従って`startup`フォルダーに入れた`ply2fbx-armature.py`を削除してください。
 
-- Blenderが起動していたら閉じておきます
-- [こちら](https://github.com/am1tanaka/ply2fbx/releases/download/v1.0.2/ply2fbx-armature.py)から`ply2fbx-armature.py`をダウンロードします
-- Blenderの`scripts/startup`フォルダーを開きます
-  - macの場合、Finderでアプリケーションを選択 -> blender-2.??-macOS-?? -> blenderを[Ctrl]+クリック -> パッケージの内容を表示 -> Contents -> Resources -> 2.79 -> scripts -> startupを開きます
-  - Windowsの場合、デフォルト設定でインストールしていたら、`C:\Program Files\Blender Foundation\Blender\2.79\scripts\startup`です
-
-![open startup folder](doc-images/img00.png)
-
-- ダウンロードした`ply2fbx-armature.py`を、上記で開いた`startup`フォルダーにコピーします(コピーする時に、管理者パスワードが必要になる場合があります)
+- Blenderが起動していたら閉じてください
+- Windowsの場合、`C:\Program Files\Blender Foundation\Blender\2.79\scripts\startup`を開きます
+- macの場合、Finderでアプリケーションを選択 -> blender-2.??-macOS-?? -> blenderを[Ctrl]+クリック -> パッケージの内容を表示 -> Contents -> Resources -> 2.79 -> scripts -> startupを開きます
+- `ply2fbx-armature.py`を削除します(なければ大丈夫です)
 
 ![copy py file](doc-images/img01.png)
 
-以上でインストール完了です。Blenderを起動して、Miscタブが追加されていて、3つのボタン(Import PLY, Auto Weight, Export FBX and Texture)が確認できればOKです。
+
+# インストール
+**Blender 2.79b**にインストールする手順です。Blenderはインストール済みとします。
+
+- [こちら](https://github.com/am1tanaka/ply2fbx/releases)から最新バージョンの`ply2fbx-armature.py`を、分かりやすい場所(デスクトップなど)にダウンロードします
+- Blenderを起動して、*File*メニューから*User Preferences*を選択します
+- *Add-ons*を選択したら、*Install Add-on from File...*をクリックします
+
+![From File](doc-images/install/img00.png)
+
+- ダウンロード先を指定したら、`ply2fbx-armature.py`を選択して、*Install Add-on from File...*ボタンをクリックします
+
+![Install Add-on](doc-images/install/img01.png)
+
+- 左上から*Texting*をクリックして選択して、*Import Export: PLY2FBXエクスポーター*にチェックを入れて、左下の*Save User Settings*ボタンをクリックして状態を保存します
+
+![Enable Add-on](doc-images/install/img02.png)
+
+以上でインストール完了です。*Blender User Preferences*ウィンドは閉じて構いません。
+
+左のパネルの一番下に*Misc*タブが追加されるのでクリックしてください。*Import PLY*, *Auto Weight*, *Export FBX and Texture*の3つのボタンが確認できればOKです。
 
 ![show ply tool](doc-images/img02.png)
 
-> 本来はAdd-onにした方がよい気もしましたが、詳しくないのでとりあえずStartupで読み込むようにしました。タブ名の*Misc*もそのままです。気になるようでしたらMITライセンスですのでご自由に修正ください。プルリク歓迎！
+<s>本来はAdd-onにした方がよい気もしましたが、詳しくないのでとりあえずStartupで読み込むようにしました。</s>(対応しました！2018/8/30)
+
+タブ名の*Misc*もそのままです。気になるようでしたらMITライセンスですのでご自由に修正ください。プルリク歓迎！
 
 # チュートリアル
 詳しい利用手順は以下を参照ください。
